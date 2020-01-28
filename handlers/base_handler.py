@@ -1,11 +1,17 @@
 
 import json
 import pickle
-import tornado.web
-from utils.json_encoder import ObjectEncoder
 
+import tornado.web
+
+from utils.json_encoder import ObjectEncoder
+from models.customer_model import CustomerModel
 
 class BaseHandler(tornado.web.RequestHandler):
+
+    @property
+    def customer(self):
+        return self._customer
 
     @property
     def db(self):
@@ -45,3 +51,11 @@ class BaseHandler(tornado.web.RequestHandler):
     def set_cache(self, key, value, ex=None):
         value = pickle.dumps(value)
         self.cache.set(key, value, ex=ex)
+
+    async def prepare(self):
+        session_key = self.get_cookie("session-key")
+        customer_id = self.get_cache("rtb_ui:session_pool:{}".format(session_key))
+        self._customer = await CustomerModel.get(customer_id)
+
+        if self.customer is None:
+            self.send_error(401)

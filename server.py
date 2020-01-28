@@ -48,7 +48,7 @@ if __name__ == '__main__':
     application = Application(
         urls.urls,
         cookie_secret='11111111',
-        debug=(True if options.debug == "yes" else False))
+        debug=(True))
 
     application.listen(options.port)
 
