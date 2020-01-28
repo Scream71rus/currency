@@ -8,6 +8,7 @@ import tornado.httpclient
 from tornado.options import options
 
 from models.base_model import BaseModel
+from workers.exchange_rates_api import ExchangeRatesAPI
 
 
 class Application(tornado.web.Application):
@@ -47,3 +48,5 @@ class Application(tornado.web.Application):
 
         self._httpclient = tornado.httpclient.AsyncHTTPClient()
 
+        exchange_rates_API_worker = ExchangeRatesAPI(self)
+        tornado.ioloop.IOLoop.current().spawn_callback(exchange_rates_API_worker.update_rate)

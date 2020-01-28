@@ -31,6 +31,9 @@ define("cache_db", type=int)
 
 define("debug", type=str)
 
+define("exchange_rates_url", type=str)
+define("base_currency", type=str)
+
 parse_config_file("application.conf")
 tornado.options.parse_command_line()
 

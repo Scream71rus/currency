@@ -7,6 +7,7 @@ import tornado.web
 from utils.json_encoder import ObjectEncoder
 from models.customer_model import CustomerModel
 
+
 class BaseHandler(tornado.web.RequestHandler):
 
     @property
